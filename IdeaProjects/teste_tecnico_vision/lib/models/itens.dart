@@ -19,7 +19,7 @@ class Item {
   };
 
   static Item fromJson(Map<String, dynamic> json) => Item(
-    nome: json['name'],
+    nome: json['nome'],
     quantidade: json['quantidade'],
     categoria: json['categoria'],
     preco: json['preco']?.toDouble(),

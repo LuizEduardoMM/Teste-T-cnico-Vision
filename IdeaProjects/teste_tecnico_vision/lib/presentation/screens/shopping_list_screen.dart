@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compra_estado.dart';
-import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
-import 'shopping_list_detail_page.dart';
-import 'package:teste_tecnico_vision/models/lista.dart';
+import 'package:teste_tecnico_vision/presentation/widgets/custom_app_bar.dart';
+import 'package:teste_tecnico_vision/presentation/widgets/dialog_create_list.dart';
+import 'package:teste_tecnico_vision/presentation/widgets/search_bar.dart' as custom;
+import 'package:teste_tecnico_vision/presentation/widgets/create_list_tile.dart';
+import 'package:teste_tecnico_vision/presentation/widgets/shopping_list_item.dart';
+
 
 class ShoppingListPage extends StatefulWidget {
   @override
@@ -15,6 +18,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   bool _isFocused = false;
+  String _filterQuery = "";
 
   @override
   void initState() {
@@ -32,30 +36,18 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
     super.dispose();
   }
 
+  void _onSearch() {
+    setState(() {
+      _filterQuery = _controller.text.toLowerCase();
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(150),
-        child: Stack(children: [
-          AppBar(
-            title: const Text(
-              'GroceriEasy.',
-              style:
-                  TextStyle(fontFamily: 'Brutel', fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: Colors.amber,
-          ),
-          Positioned(
-              bottom: 0,
-              right: 0,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                child: Image.asset('assets/images/Sacola.png',
-                    width: 220, height: 130),
-              ))
-        ]),
-      ),
+      appBar: CustomAppBarHome(),
       body: Container(
         color: Colors.amber,
         child: Column(
@@ -86,96 +78,35 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                         ),
                       ),
                     ),
+                    custom.SearchBarList(
+                      controller: _controller,
+                      focusNode: _focusNode,
+                      isFocused: _isFocused,
+                      onSearch: _onSearch,
+                    ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextField(
-                        controller: _controller,
-                        focusNode: _focusNode,
-                        decoration: InputDecoration(
-                          enabled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          labelText: 'Nome da lista de compras',
-                          labelStyle: TextStyle(
-                            color: _isFocused ? Colors.black : Colors.grey,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.search),
-                            onPressed: () {
-                              if (_controller.text.isNotEmpty) {
-                                final newList = ListaCompras(
-                                  nome: _controller.text,
-                                  dataCriacao: DateTime.now(),
-                                  itens: [],
-                                );
-                                context
-                                    .read<ShoppingListBloc>()
-                                    .add(AddListaCompra(newList));
-                                _controller.clear();
-                              }
-                            },
-                          ),
-                        ),
-                        style: TextStyle(
-                          color: _isFocused ? Colors.black : Colors.grey,
-                        ),
+                      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                      child: ShoppingListCreateTile(
+                        onTap: (){
+                          DialogCreateList.show(context);
+                        },
                       ),
                     ),
                     Expanded(
                       child: BlocBuilder<ShoppingListBloc, ShoppingListState>(
                         builder: (context, state) {
-                          if (state.listaCompras.isEmpty) {
+                          final listaParaMostrar = state.listaCompras.where((lista) {
+                            return lista.nome.toLowerCase().contains(_filterQuery);
+                          }).toList();
+                          if (listaParaMostrar.isEmpty) {
                             return const Center(
                                 child: Text('Nenhuma lista cadastrada.'));
                           }
                           return ListView.builder(
-                            itemCount: state.listaCompras.length,
+                            itemCount: listaParaMostrar.length,
                             itemBuilder: (context, index) {
-                              final shoppingList = state.listaCompras[index];
-                              return Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  color: Colors.grey[0],
-                                  child: ListTile(
-                                    title: Text(
-                                      '${shoppingList.nome} | Criada em: ${shoppingList.dataCriacao.toLocal().toShortDateString()}',
-                                      style: TextStyle(fontFamily: 'Brutel'),
-                                    ),
-                                    subtitle: Text(
-                                        '${shoppingList.itens.length} produtos',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Brutel')),
-                                    trailing: IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      onPressed: () {
-                                        debugPrint(
-                                            'Deletando lista de compras');
-                                      },
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    style: ListTileStyle.list,
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ShoppingListDetailPage(
-                                            shoppingList: shoppingList,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
+                              final shoppingList = listaParaMostrar[index];
+                              return ShoppingListItem(shoppingList: shoppingList);
                             },
                           );
                         },
@@ -189,11 +120,5 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
         ),
       ),
     );
-  }
-}
-
-extension on DateTime {
-  String toShortDateString() {
-    return '${day.toString().padLeft(2, '0')}.${month.toString().padLeft(2, '0')}';
   }
 }
