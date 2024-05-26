@@ -21,7 +21,7 @@ class GroceriEasy extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ShoppingListBloc(shoppingListRepository: shoppingListRepository)..add(CarregarListaCompra()),
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'GroceriEasy',
         home: InitialScreen(),

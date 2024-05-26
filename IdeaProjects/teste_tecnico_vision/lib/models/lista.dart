@@ -14,14 +14,12 @@ class ListaCompras {
   Map<String, dynamic> toJson() => {
     'nome': nome,
     'dataCriacao': dataCriacao.toIso8601String(),
-    'produtos': itens.map((product) => product.toJson()).toList(),
+    'itens': itens.map((item) => item.toJson()).toList(),
   };
 
   static ListaCompras fromJson(Map<String, dynamic> json) => ListaCompras(
     nome: json['nome'],
     dataCriacao: DateTime.parse(json['dataCriacao']),
-    itens: (json['produtos'] as List)
-        .map((productJson) => Item.fromJson(productJson))
-        .toList(),
+    itens: List<Item>.from(json['itens'].map((itemJson) => Item.fromJson(itemJson))),
   );
 }

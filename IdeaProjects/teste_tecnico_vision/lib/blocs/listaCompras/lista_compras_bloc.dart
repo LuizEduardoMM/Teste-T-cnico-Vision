@@ -1,7 +1,4 @@
-import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:equatable/equatable.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compra_estado.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
@@ -15,11 +12,29 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
     on<CarregarListaCompra>(_carregarListaCompra);
     on<AddListaCompra>(_addListaCompra);
     on<AddProdutoListaCompra>(_onAddProductToShoppingList);
+    on<DeleteListaCompra>(_mapDeleteListaCompraToState);
+
   }
 
-  void _carregarListaCompra(CarregarListaCompra event, Emitter<ShoppingListState> emit) async {
-    final shoppingLists = await shoppingListRepository.carregarListaShopping();
-    emit(ShoppingListState(shoppingLists));
+  void _onAddProductToShoppingList(AddProdutoListaCompra event, Emitter<ShoppingListState> emit) async {
+    final updatedLists = state.listaCompras.map((lista) {
+      if (lista.nome == event.nomeListaCompra) {
+        return ListaCompras(
+          nome: lista.nome,
+          dataCriacao: lista.dataCriacao,
+          itens: [...lista.itens, event.produto],
+        );
+      }
+      return lista;
+    }).toList();
+    await shoppingListRepository.salvarListaCompras(updatedLists);
+    emit(ShoppingListState(updatedLists));
+  }
+
+  void _mapDeleteListaCompraToState(DeleteListaCompra event, Emitter<ShoppingListState> emit) async {
+    final updatedLists = List<ListaCompras>.from(state.listaCompras)..remove(event.lista);
+    await shoppingListRepository.salvarListaCompras(updatedLists);
+    emit(ShoppingListState(updatedLists));
   }
 
   void _addListaCompra(AddListaCompra event, Emitter<ShoppingListState> emit) async {
@@ -28,18 +43,9 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
     emit(ShoppingListState(updatedList));
   }
 
-  void _onAddProductToShoppingList(AddProdutoListaCompra event, Emitter<ShoppingListState> emit) async {
-    final updatedLists = state.listaCompras.map((list) {
-      if (list.nome == event.nomeListaCompra) {
-        return ListaCompras(
-          nome: list.nome,
-          dataCriacao: list.dataCriacao,
-          itens: List<Item>.from(list.itens)..add(event.produto),
-        );
-      }
-      return list;
-    }).toList();
-    await shoppingListRepository.salvarListaCompras(updatedLists);
-    emit(ShoppingListState(updatedLists));
+  void _carregarListaCompra(CarregarListaCompra event, Emitter<ShoppingListState> emit) async {
+    final shoppingLists = await shoppingListRepository.carregarListaShopping();
+    emit(ShoppingListState(shoppingLists));
   }
+
 }

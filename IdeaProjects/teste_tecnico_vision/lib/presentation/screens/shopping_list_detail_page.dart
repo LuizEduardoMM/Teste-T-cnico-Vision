@@ -1,94 +1,213 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
-import 'package:teste_tecnico_vision/models/itens.dart';
-import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
+import 'package:teste_tecnico_vision/presentation/widgets/custom_app_bar_cart.dart';
+import 'package:teste_tecnico_vision/presentation/screens/insert_itens_screen.dart';
+import '../../models/itens.dart';
 
-class ShoppingListDetailPage extends StatelessWidget {
-  final ListaCompras shoppingList;
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _quantityController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final List<String> categories = ['Alimentos', 'Limpeza', 'Higiene', 'Outros'];
-  String selectedCategory = 'Alimentos';
+class ShoppingListDetailPage extends StatefulWidget {
+  late final ListaCompras shoppingList;
 
   ShoppingListDetailPage({required this.shoppingList});
 
   @override
+  _ShoppingListDetailPageState createState() => _ShoppingListDetailPageState();
+}
+
+class _ShoppingListDetailPageState extends State<ShoppingListDetailPage> {
+  final TextEditingController controller = TextEditingController();
+  String searchTerm = '';
+
+  void _navigateToProductCreationPage() {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        builder: (context) =>
+            ProductCreationPage(shoppingList: widget.shoppingList),
+      ),
+    )
+        .then((newProduct) {
+
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final Map<String, List<Item>> categorizedItems = {};
+    for (var item in widget.shoppingList.itens) {
+      if (!categorizedItems.containsKey(item.categoria)) {
+        categorizedItems[item.categoria] = [];
+      }
+      categorizedItems[item.categoria]!.add(item);
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text(shoppingList.nome)),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
+      backgroundColor: Colors.amber,
+      appBar: CustomAppBarCart(),
+      body: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(23),
+            topRight: Radius.circular(23),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
+              child: Text(
+                'Criada em ${widget.shoppingList.dataCriacao.toLocal().toShortDateString()}',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Brutel',
+                  fontSize: 13,
+                ),
+              ),
+            ),
+            Row(
               children: [
-                TextField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Nome do produto'),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  child: IconButton(
+                      icon: const Icon(Icons.arrow_back_outlined),
+                      style: const ButtonStyle(
+                        visualDensity:
+                            VisualDensity(horizontal: -4.0, vertical: -4.0),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }),
                 ),
-                TextField(
-                  controller: _quantityController,
-                  decoration: const InputDecoration(labelText: 'Quantidade'),
-                  keyboardType: TextInputType.number,
-                ),
-                DropdownButtonFormField<String>(
-                  value: selectedCategory,
-                  items: categories.map((String category) {
-                    return DropdownMenuItem<String>(
-                      value: category,
-                      child: Text(category),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {
-                    if (newValue != null) {
-                      selectedCategory = newValue;
-                    }
-                  },
-                  decoration: const InputDecoration(labelText: 'Categoria'),
-                ),
-                TextField(
-                  controller: _priceController,
-                  decoration: const InputDecoration(labelText: 'Preço (opcional)'),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_nameController.text.isNotEmpty && _quantityController.text.isNotEmpty) {
-                      final newProduct = Item(
-                        nome: _nameController.text,
-                        quantidade: int.parse(_quantityController.text),
-                        categoria: selectedCategory,
-                        preco: _priceController.text.isNotEmpty ? double.parse(_priceController.text) : null,
-                      );
-                      context.read<ShoppingListBloc>().add(AddProdutoListaCompra(shoppingList.nome, newProduct));
-                      _nameController.clear();
-                      _quantityController.clear();
-                      _priceController.clear();
-                    }
-                  },
-                  child: const Text('Adicionar Produto'),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Text(
+                    widget.shoppingList.nome,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Brutel',
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: shoppingList.itens.length,
-              itemBuilder: (context, index) {
-                final product = shoppingList.itens[index];
-                return ListTile(
-                  title: Text(product.nome),
-                  subtitle: Text('Quantidade: ${product.quantidade} - Categoria: ${product.categoria}'),
-                  trailing: product.preco != null ? Text('R\$ ${product.preco}') : null,
-                );
-              },
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 20, 0, 0),
+                      child: Row(
+                        children: [
+                          Text("Produtos (${widget.shoppingList.itens.length})",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Brutel',
+                                fontSize: 14,
+                              )),
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                            child: Text(
+                              "Total: R\$${(widget.shoppingList.itens.fold<double>(0.0, (sum, item) => sum + (item.preco ?? 0.0) * item.quantidade)).toStringAsFixed(2)}",
+                              textAlign: TextAlign.right,
+                            ),
+                          ))
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: TextField(
+                        controller: controller,
+                        onChanged: (value) {
+                          setState(() {
+                            searchTerm = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: const BoxDecoration(
+                                color: Colors.yellow,
+                                shape: BoxShape.circle,
+                              ),
+                              child: IconButton(
+                                icon: const Icon(Icons.add, size: 16),
+                                color: Colors.white,
+                                onPressed: _navigateToProductCreationPage,
+                              ),
+                            ),
+                          ),
+                          hintText: 'Nome do produto',
+                          hintStyle: const TextStyle(
+                            color: Colors.grey,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    ...categorizedItems.entries.map((entry) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              entry.key,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontFamily: 'Brutel',
+                              ),
+                            ),
+                            ...entry.value.map((item) {
+                              return Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: ListTile(
+                                  title: Text(item.nome),
+                                  subtitle: Text(
+                                    'Quantidade: ${item.quantidade} | Unidade: R\$${(item.preco ?? 0.0).toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'Brutel',
+                                    ),
+                                  ),
+                                  trailing: item.preco != null
+                                      ? Text(
+                                          'Total: R\$${((item.preco ?? 0.0) * item.quantidade).toStringAsFixed(2)}',
+                                        )
+                                      : null,
+                                ),
+                              );
+                            }),
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+}
+
+extension on DateTime {
+  String toShortDateString() {
+    return '${day.toString().padLeft(2, '0')}.${month.toString().padLeft(2, '0')}';
   }
 }

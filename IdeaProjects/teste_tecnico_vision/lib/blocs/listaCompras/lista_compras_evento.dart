@@ -28,3 +28,19 @@ class AddProdutoListaCompra extends ListaCompraEvento {
   @override
   List<Object> get props => [nomeListaCompra, produto];
 }
+class FiltrarListaCompras extends ListaCompraEvento {
+  final String query;
+
+  const FiltrarListaCompras(this.query);
+
+  @override
+  List<Object> get props => [query];
+}
+class DeleteListaCompra extends ListaCompraEvento {
+  final ListaCompras lista;
+
+  const DeleteListaCompra(this.lista);
+
+  @override
+  List<Object> get props => [lista];
+}
