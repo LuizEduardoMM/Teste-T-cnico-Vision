@@ -1,11 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/models/itens.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/custom_app_bar_cart.dart';
-import 'package:teste_tecnico_vision/repositories/produtos_repositorio.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
-import 'package:teste_tecnico_vision/repositories/lista_compra_repositorio.dart';
+
 
 import '../../blocs/listaCompras/lista_compras_evento.dart';
 
@@ -20,21 +21,25 @@ class ProductCreationPage extends StatefulWidget {
 
 class _ProductCreationPageState extends State<ProductCreationPage> {
   final _formKey = GlobalKey<FormState>();
-  late ListaCompraRepositorio shoppingListRepository = ListaCompraRepositorio();
+
 
   final _productNameController = TextEditingController();
   final _quantityController = TextEditingController();
   final _priceController = TextEditingController();
   String? _selectedCategory;
 
+  Completer<void> _stateCompleter = Completer<void>();
   @override
   void initState() {
     super.initState();
-    shoppingListRepository = ListaCompraRepositorio();
-
+    BlocProvider.of<ShoppingListBloc>(context).stream.listen((state) {
+      if (!_stateCompleter.isCompleted) {
+        _stateCompleter.complete();
+      }
+    });
   }
 
-  void _addProduct() async {
+  void _addProduct() {
     if (_formKey.currentState!.validate()) {
       final newProduct = Item(
         nome: _productNameController.text,
@@ -43,10 +48,9 @@ class _ProductCreationPageState extends State<ProductCreationPage> {
         categoria: _selectedCategory ?? 'Sem categoria',
       );
 
-      final itemRepositorio = ItemRepositorio();
-      await itemRepositorio.adicionarItem(newProduct);
       BlocProvider.of<ShoppingListBloc>(context).add(AddProdutoListaCompra(widget.shoppingList.nome, newProduct));
-      Navigator.pop(context);
+
+      Navigator.pop(context,true);
     }
   }
 
