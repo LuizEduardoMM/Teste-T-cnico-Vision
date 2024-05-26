@@ -44,3 +44,9 @@ class DeleteListaCompra extends ListaCompraEvento {
   @override
   List<Object> get props => [lista];
 }
+class RemoverProdutoListaCompra extends ListaCompraEvento {
+  final String nomeListaCompra;
+  final Item produto;
+
+  RemoverProdutoListaCompra(this.nomeListaCompra, this.produto);
+}

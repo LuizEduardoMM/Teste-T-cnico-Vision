@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
+import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/custom_app_bar_cart.dart';
 import 'package:teste_tecnico_vision/presentation/screens/insert_itens_screen.dart';
 import '../../models/itens.dart';
 
 class ShoppingListDetailPage extends StatefulWidget {
-  late final ListaCompras shoppingList;
+  final ListaCompras shoppingList;
 
   ShoppingListDetailPage({required this.shoppingList});
 
@@ -21,13 +24,18 @@ class _ShoppingListDetailPageState extends State<ShoppingListDetailPage> {
     Navigator.of(context)
         .push(
       MaterialPageRoute(
-        builder: (context) =>
-            ProductCreationPage(shoppingList: widget.shoppingList),
+        builder: (context) => ProductCreationPage(shoppingList: widget.shoppingList),
       ),
     )
-        .then((newProduct) {
-
+        .then((value) {
+      debugPrint('Supostamente sou o 3');
+      BlocProvider.of<ShoppingListBloc>(context).add(CarregarListaCompra());
     });
+  }
+
+  void _removeProduct(Item item) {
+    BlocProvider.of<ShoppingListBloc>(context)
+        .add(RemoverProdutoListaCompra(widget.shoppingList.nome, item));
   }
 
   @override
@@ -70,14 +78,14 @@ class _ShoppingListDetailPageState extends State<ShoppingListDetailPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                   child: IconButton(
-                      icon: const Icon(Icons.arrow_back_outlined),
-                      style: const ButtonStyle(
-                        visualDensity:
-                            VisualDensity(horizontal: -4.0, vertical: -4.0),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
+                    icon: const Icon(Icons.arrow_back_outlined),
+                    style: const ButtonStyle(
+                      visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -108,13 +116,14 @@ class _ShoppingListDetailPageState extends State<ShoppingListDetailPage> {
                                 fontSize: 14,
                               )),
                           Expanded(
-                              child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                            child: Text(
-                              "Total: R\$${(widget.shoppingList.itens.fold<double>(0.0, (sum, item) => sum + (item.preco ?? 0.0) * item.quantidade)).toStringAsFixed(2)}",
-                              textAlign: TextAlign.right,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                              child: Text(
+                                "Total: R\$${(widget.shoppingList.itens.fold<double>(0.0, (sum, item) => sum + (item.preco ?? 0.0) * item.quantidade)).toStringAsFixed(2)}",
+                                textAlign: TextAlign.right,
+                              ),
                             ),
-                          ))
+                          ),
                         ],
                       ),
                     ),
@@ -183,11 +192,18 @@ class _ShoppingListDetailPageState extends State<ShoppingListDetailPage> {
                                       fontFamily: 'Brutel',
                                     ),
                                   ),
-                                  trailing: item.preco != null
-                                      ? Text(
-                                          'Total: R\$${((item.preco ?? 0.0) * item.quantidade).toStringAsFixed(2)}',
-                                        )
-                                      : null,
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      item.preco != null
+                                          ? Text('Total: R\$${((item.preco ?? 0.0) * item.quantidade).toStringAsFixed(2)}')
+                                          : Container(),
+                                      IconButton(
+                                        icon: Icon(Icons.delete, color: Colors.red),
+                                        onPressed: () => _removeProduct(item),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             }),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
 
@@ -16,7 +17,9 @@ class ListaCompraRepositorio {
   }
 
   Future<void> salvarListaCompras(List<ListaCompras> shoppingLists) async {
+    debugPrint('Começou async (1/3)');
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    debugPrint('Começou async em teoria é o 2 (2/3)');
     prefs.setString(_chaveListaCompras, json.encode(shoppingLists.map((lista) => lista.toJson()).toList()));
   }
   Future<void> excluirListaCompras(ListaCompras lista) async {
