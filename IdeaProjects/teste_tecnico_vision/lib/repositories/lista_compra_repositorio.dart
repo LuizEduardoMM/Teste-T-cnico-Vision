@@ -27,4 +27,5 @@ class ListaCompraRepositorio {
     listaCompras.removeWhere((element) => element.nome == lista.nome);
     await salvarListaCompras(listaCompras);
   }
+
 }

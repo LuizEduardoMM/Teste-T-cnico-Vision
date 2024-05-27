@@ -5,49 +5,89 @@ class ShoppingListController extends GetxController {
   var categorizedItems = <String, List<Item>>{}.obs;
   var totalItems = 0.obs;
   var totalPrice = 0.0.obs;
-  var searchTerm = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    categorizedItems.forEach((category, items) {
+      items.forEach((item) {
+        item.isSelected.listen((_) {
+          sortItemsByCategory(category);
+        });
+      });
+    });
+  }
 
   void updateCategorizedItems(Map<String, List<Item>> items) {
     categorizedItems.value = items;
     updateTotals();
+
+    items.forEach((category, itemList) {
+      itemList.forEach((item) {
+        item.isSelected.listen((_) {
+          sortItemsByCategory(category);
+        });
+      });
+    });
   }
 
   void updateSearchTerm(String term) {
-    searchTerm.value = term;
+
   }
 
   void removeProduct(String category, Item item) {
-    if (categorizedItems.containsKey(category)) {
-      categorizedItems[category]?.remove(item);
-      if (categorizedItems[category]!.isEmpty) {
-        categorizedItems.remove(category);
-      }
-      updateTotals();
-    }
+    categorizedItems[category]?.remove(item);
+    updateTotals();
   }
 
   void updateTotals() {
-    int itemCount = 0;
-    double priceSum = 0.0;
+    int totalItemsCount = 0;
+    double totalPriceSum = 0.0;
+
     categorizedItems.forEach((category, items) {
-      itemCount += items.length;
-      priceSum += items.fold(0.0, (sum, item) => sum + (item.preco ?? 0.0) * item.quantidade);
+      totalItemsCount += items.length;
+      totalPriceSum += items.fold(0, (sum, item) => sum + ((item.preco ?? 0.0) * item.quantidade));
     });
-    totalItems.value = itemCount;
-    totalPrice.value = priceSum;
+
+    totalItems.value = totalItemsCount;
+    totalPrice.value = totalPriceSum;
+  }
+
+  void sortItemsByCategory(String category) {
+    var items = categorizedItems[category];
+    if (items != null) {
+      items.sort((a, b) {
+        if (a.isSelected.value == b.isSelected.value) {
+          return a.nome.compareTo(b.nome);
+        }
+        return a.isSelected.value ? 1 : -1;
+      });
+      categorizedItems[category] = items;
+      categorizedItems.refresh();
+    }
   }
 
   void sortItemsByName(bool ascending) {
-    categorizedItems.updateAll((key, items) {
-      items.sort((a, b) => ascending ? a.nome.compareTo(b.nome) : b.nome.compareTo(a.nome));
-      return items;
+    categorizedItems.forEach((category, items) {
+      items.sort((a, b) {
+        int compareResult = a.nome.compareTo(b.nome);
+        if (!ascending) compareResult = -compareResult;
+        if (a.isSelected.value == b.isSelected.value) return compareResult;
+        return a.isSelected.value ? 1 : -1;
+      });
     });
+    categorizedItems.refresh();
   }
 
   void sortItemsByPrice(bool ascending) {
-    categorizedItems.updateAll((key, items) {
-      items.sort((a, b) => ascending ? (a.preco ?? 0).compareTo(b.preco ?? 0) : (b.preco ?? 0).compareTo(a.preco ?? 0));
-      return items;
+    categorizedItems.forEach((category, items) {
+      items.sort((a, b) {
+        int compareResult = (a.preco ?? 0.0).compareTo(b.preco ?? 0.0);
+        if (!ascending) compareResult = -compareResult;
+        if (a.isSelected.value == b.isSelected.value) return compareResult;
+        return a.isSelected.value ? 1 : -1;
+      });
     });
+    categorizedItems.refresh();
   }
 }

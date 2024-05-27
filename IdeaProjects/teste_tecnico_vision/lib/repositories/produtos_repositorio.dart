@@ -29,4 +29,14 @@ class ItemRepositorio {
     itens.removeWhere((element) => element.nome == item.nome);
     await prefs.setString(_chaveItens, json.encode(itens.map((item) => item.toJson()).toList()));
   }
+
+  Future<void> editarItem(String nomeAntigo, Item itemAtualizado) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<Item> itens = await carregarItens();
+    int index = itens.indexWhere((element) => element.nome == nomeAntigo);
+    if (index != -1) {
+      itens[index] = itemAtualizado;
+      await prefs.setString(_chaveItens, json.encode(itens.map((item) => item.toJson()).toList()));
+    }
+  }
 }
