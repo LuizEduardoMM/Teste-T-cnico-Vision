@@ -18,7 +18,6 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
 
   void _onAddProductToShoppingList(AddProdutoListaCompra event, Emitter<ShoppingListState> emit) async {
     final updatedLists = state.listaCompras.map((lista) {
-      debugPrint('Adicionando');
       if (lista.nome == event.nomeListaCompra) {
         return ListaCompras(
           nome: lista.nome,
