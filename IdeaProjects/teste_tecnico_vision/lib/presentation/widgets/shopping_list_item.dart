@@ -5,6 +5,8 @@ import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/presentation/screens/shopping_list_detail_page.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/dialog_delete_list.dart';
 
+import 'dialog_edit_list.dart';
+
 class ShoppingListItem extends StatelessWidget {
   final ListaCompras shoppingList;
 
@@ -52,7 +54,7 @@ class ShoppingListItem extends StatelessWidget {
                 ),
                 color: Colors.white,
                 onPressed: () {
-
+                 DialogEditList.show(context, shoppingList);
                 },
               ),
               IconButton(

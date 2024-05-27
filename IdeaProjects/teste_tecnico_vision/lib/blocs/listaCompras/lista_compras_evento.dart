@@ -50,3 +50,24 @@ class RemoverProdutoListaCompra extends ListaCompraEvento {
 
   RemoverProdutoListaCompra(this.nomeListaCompra, this.produto);
 }
+class EditarNomeListaCompra extends ListaCompraEvento {
+  final String nomeAntigo;
+  final String nomeNovo;
+
+  EditarNomeListaCompra(this.nomeAntigo, this.nomeNovo);
+}
+class EditarItemListaCompra extends ListaCompraEvento {
+  final String nomeAntigo;
+  final Item itemAtualizado;
+
+  EditarItemListaCompra(this.nomeAntigo, this.itemAtualizado);
+}
+
+class LimparListaCompra extends ListaCompraEvento {
+  final String nomeListaCompra;
+
+  const LimparListaCompra(this.nomeListaCompra);
+
+  @override
+  List<Object> get props => [nomeListaCompra];
+}

@@ -5,6 +5,7 @@ import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/models/itens.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/custom_app_bar_cart.dart';
 import 'package:teste_tecnico_vision/presentation/screens/insert_itens_screen.dart';
+import 'package:teste_tecnico_vision/presentation/widgets/dialog_clean_list.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/product_categories.dart';
 import 'package:teste_tecnico_vision/controller/shopping_list_controller.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
@@ -18,11 +19,13 @@ class ShoppingListDetailPage extends StatelessWidget {
   ShoppingListDetailPage({required this.shoppingList});
 
   void _navigateToProductCreationPage(BuildContext context) {
-    Navigator.of(context).push(
+    Navigator.of(context)
+        .push(
       MaterialPageRoute(
         builder: (context) => ProductCreationPage(shoppingList: shoppingList),
       ),
-    ).then((value) {
+    )
+        .then((value) {
       BlocProvider.of<ShoppingListBloc>(context).add(CarregarListaCompra());
     });
   }
@@ -47,8 +50,11 @@ class ShoppingListDetailPage extends StatelessWidget {
       appBar: CustomAppBarCart(),
       body: BlocConsumer<ShoppingListBloc, ShoppingListState>(
         listener: (context, state) {
-          final updatedShoppingList = state.listaCompras.firstWhere((list) => list.nome == shoppingList.nome, orElse: () => shoppingList);
-          controller.updateCategorizedItems(_categorizeItems(updatedShoppingList.itens));
+          final updatedShoppingList = state.listaCompras.firstWhere(
+              (list) => list.nome == shoppingList.nome,
+              orElse: () => shoppingList);
+          controller.updateCategorizedItems(
+              _categorizeItems(updatedShoppingList.itens));
         },
         builder: (context, state) {
           return Container(
@@ -93,6 +99,15 @@ class ShoppingListDetailPage extends StatelessWidget {
                           fontFamily: 'Brutel',
                           fontSize: 20,
                         ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(120, 0, 0, 0),
+                      child: IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                        showDialog(context: context, builder: (context)=>DialogCleanList(shoppingList: shoppingList));
+                        },
                       ),
                     ),
                   ],
@@ -193,7 +208,8 @@ class ShoppingListDetailPage extends StatelessWidget {
                                     shape: BoxShape.circle,
                                   ),
                                   child: IconButton(
-                                    onPressed: () => _navigateToProductCreationPage(context),
+                                    onPressed: () =>
+                                        _navigateToProductCreationPage(context),
                                     icon: const Icon(
                                       Icons.add,
                                       size: 16,
@@ -207,13 +223,16 @@ class ShoppingListDetailPage extends StatelessWidget {
                         ),
                         Obx(() {
                           return Column(
-                            children: controller.categorizedItems.entries.map((entry) {
+                            children: controller.categorizedItems.entries
+                                .map((entry) {
                               return ProductCategory(
                                 category: entry.key,
                                 items: entry.value,
                                 onRemoveProduct: (item) {
                                   controller.removeProduct(entry.key, item);
-                                  BlocProvider.of<ShoppingListBloc>(context).add(RemoverProdutoListaCompra(shoppingList.nome, item));
+                                  BlocProvider.of<ShoppingListBloc>(context)
+                                      .add(RemoverProdutoListaCompra(
+                                          shoppingList.nome, item));
                                 },
                               );
                             }).toList(),

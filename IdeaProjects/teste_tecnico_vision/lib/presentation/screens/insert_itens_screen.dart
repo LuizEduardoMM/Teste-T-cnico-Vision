@@ -130,7 +130,7 @@ class _ProductCreationPageState extends State<ProductCreationPage> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, insira o preço';
+                            return null;
                           }
                           return null;
                         },
@@ -157,7 +157,7 @@ class _ProductCreationPageState extends State<ProductCreationPage> {
                         },
                         validator: (value) {
                           if (value == null) {
-                            return 'Por favor, selecione uma categoria';
+                            return "Escolha categoria";
                           }
                           return null;
                         },

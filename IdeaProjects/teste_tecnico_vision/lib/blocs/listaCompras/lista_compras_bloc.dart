@@ -14,6 +14,9 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
     on<AddProdutoListaCompra>(_onAddProductToShoppingList);
     on<DeleteListaCompra>(_mapDeleteListaCompraToState);
     on<RemoverProdutoListaCompra>(_onRemoveProductFromShoppingList);
+    on<EditarNomeListaCompra>(_onEditarNomeListaCompra);
+    on<EditarItemListaCompra>(_onEditarItemListaCompra);
+    on<LimparListaCompra>(_onLimparListaCompra);
   }
 
   void _onAddProductToShoppingList(AddProdutoListaCompra event, Emitter<ShoppingListState> emit) async {
@@ -57,6 +60,55 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
           nome: lista.nome,
           dataCriacao: lista.dataCriacao,
           itens: lista.itens.where((item) => item != event.produto).toList(),
+        );
+      }
+      return lista;
+    }).toList();
+
+    await shoppingListRepository.salvarListaCompras(updatedLists);
+    emit(ShoppingListState(updatedLists));
+  }
+
+  void _onEditarNomeListaCompra(EditarNomeListaCompra event, Emitter<ShoppingListState> emit) async {
+    final updatedLists = state.listaCompras.map((lista) {
+      if (lista.nome == event.nomeAntigo) {
+        return ListaCompras(
+          nome: event.nomeNovo,
+          dataCriacao: lista.dataCriacao,
+          itens: lista.itens,
+        );
+      }
+      return lista;
+    }).toList();
+
+    await shoppingListRepository.salvarListaCompras(updatedLists);
+    emit(ShoppingListState(updatedLists));
+  }
+  void _onEditarItemListaCompra(EditarItemListaCompra event, Emitter<ShoppingListState> emit) async {
+    final updatedLists = state.listaCompras.map((lista) {
+      if (lista.itens.any((item) => item.nome == event.nomeAntigo)) {
+        final updatedItems = lista.itens.map((item) {
+          return item.nome == event.nomeAntigo ? event.itemAtualizado : item;
+        }).toList();
+        return ListaCompras(
+          nome: lista.nome,
+          dataCriacao: lista.dataCriacao,
+          itens: updatedItems,
+        );
+      }
+      return lista;
+    }).toList();
+
+    await shoppingListRepository.salvarListaCompras(updatedLists);
+    emit(ShoppingListState(updatedLists));
+  }
+  void _onLimparListaCompra(LimparListaCompra event, Emitter<ShoppingListState> emit) async {
+    final updatedLists = state.listaCompras.map((lista) {
+      if (lista.nome == event.nomeListaCompra) {
+        return ListaCompras(
+          nome: lista.nome,
+          dataCriacao: lista.dataCriacao,
+          itens: [],
         );
       }
       return lista;
