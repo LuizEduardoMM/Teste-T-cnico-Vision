@@ -6,25 +6,31 @@ class ProductListItem extends StatelessWidget {
   final VoidCallback onRemove;
 
   ProductListItem({required this.item, required this.onRemove});
+
   void _showDeleteConfirmationDialog(BuildContext context) {
-    AlertDialog(
-      title: Text("Confirmar exclusão"),
-      content: Text("Tem certeza que deseja excluir ${item.nome}?"),
-      actions: <Widget>[
-        TextButton(
-          onPressed:(){
-            Navigator.of(context).pop();
-          } ,
-          child: Text("Cancelar"),
-        ),
-        TextButton(
-          onPressed:(){
-            onRemove;
-            Navigator.of(context).pop();
-          },
-          child: Text("Excluir"),
-        ),
-      ],
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirmar exclusão"),
+          content: Text("Tem certeza que deseja excluir ${item.nome}?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Cancelar"),
+            ),
+            TextButton(
+              onPressed: () {
+                onRemove();
+                Navigator.of(context).pop();
+              },
+              child: Text("Excluir"),
+            ),
+          ],
+        );
+      },
     );
   }
 
