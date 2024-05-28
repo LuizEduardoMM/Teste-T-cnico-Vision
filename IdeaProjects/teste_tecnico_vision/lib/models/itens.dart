@@ -6,7 +6,7 @@ class Item {
   final int quantidade;
   final String categoria;
   final double? preco;
-  RxBool isSelected;
+  late RxBool isSelected;
 
   Item({
     required this.nome,
@@ -14,27 +14,38 @@ class Item {
     required this.categoria,
     this.preco,
     bool isSelected = false,
-  }) : isSelected = RxBool(isSelected);
+  }) {
+    this.isSelected = RxBool(isSelected);
+    loadFromSharedPreferences();
+    this.isSelected.listen((value) {
+      saveToSharedPreferences();
+    });
+  }
 
   Map<String, dynamic> toJson() => {
-        'nome': nome,
-        'quantidade': quantidade,
-        'categoria': categoria,
-        'preco': preco,
-        'isSelected': isSelected.value,
-      };
+    'nome': nome,
+    'quantidade': quantidade,
+    'categoria': categoria,
+    'preco': preco,
+    'isSelected': isSelected.value,
+  };
 
   static Item fromJson(Map<String, dynamic> json) => Item(
-        nome: json['nome'],
-        quantidade: json['quantidade'],
-        categoria: json['categoria'],
-        preco: json['preco']?.toDouble(),
-        isSelected: json['isSelected'] ?? false,
-      );
+    nome: json['nome'],
+    quantidade: json['quantidade'],
+    categoria: json['categoria'],
+    preco: json['preco']?.toDouble(),
+    isSelected: json['isSelected'] ?? false,
+  );
 
   Future<void> saveToSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('${nome}_isSelected', isSelected.value);
+  }
+
+  Future<void> loadFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isSelected.value = prefs.getBool('${nome}_isSelected') ?? false;
   }
 
   Future<void> removeFromSharedPreferences() async {

@@ -107,9 +107,6 @@ class ProductListItem extends StatelessWidget {
                   value: item.isSelected.value,
                   onChanged: (bool? value) {
                     item.isSelected.value = value ?? false;
-                    item.saveToSharedPreferences();
-                    EditarNomeListaCompra(
-                        listacompras.nome, listacompras.nome);
                   },
                 )),
           ),
