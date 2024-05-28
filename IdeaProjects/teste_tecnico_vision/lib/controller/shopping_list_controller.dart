@@ -3,6 +3,7 @@ import 'package:teste_tecnico_vision/models/itens.dart';
 
 class ShoppingListController extends GetxController {
   var categorizedItems = <String, List<Item>>{}.obs;
+  var originalItems = <Item>[].obs;
   var totalItems = 0.obs;
   var totalPrice = 0.0.obs;
 
@@ -20,6 +21,7 @@ class ShoppingListController extends GetxController {
 
   void updateCategorizedItems(Map<String, List<Item>> items) {
     categorizedItems.value = items;
+    originalItems.assignAll(items.values.expand((items) => items).toList());
     updateTotals();
     items.forEach((category, itemList) {
       itemList.forEach((item) {
@@ -31,11 +33,31 @@ class ShoppingListController extends GetxController {
   }
 
   void updateSearchTerm(String term) {
-    categorizedItems.forEach((category, items) {
-      items.forEach((item) {
-        term = item.nome;
+    if (term.isNotEmpty) {
+      final Map<String, List<Item>> filteredItemsCopy =
+          Map.from(categorizedItems);
+      filteredItemsCopy.forEach((category, items) {
+        final filteredCategoryItems = items
+            .where(
+                (item) => item.nome.toLowerCase().contains(term.toLowerCase()))
+            .toList();
+        if (filteredCategoryItems.isNotEmpty) {
+          categorizedItems[category] = filteredCategoryItems;
+        } else {
+          categorizedItems.remove(category);
+        }
       });
-    });
+    } else {
+      final Map<String, List<Item>> originalMap = {};
+      originalItems.forEach((item) {
+        if (!originalMap.containsKey(item.categoria)) {
+          originalMap[item.categoria] = [];
+        }
+        originalMap[item.categoria]!.add(item);
+      });
+      categorizedItems.assignAll(originalMap);
+    }
+    updateTotals();
   }
 
   void removeProduct(String category, Item item) {

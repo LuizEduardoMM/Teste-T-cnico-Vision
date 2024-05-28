@@ -24,19 +24,17 @@ class ItemSearchBar extends StatelessWidget {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: TextField(
         controller: TextEditingController(),
-        onChanged: (value) {
+        onSubmitted: (value) {
           controller.updateSearchTerm(value.isNotEmpty ? value : '');
         },
         decoration: InputDecoration(
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30.0)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
           hintText: 'Nome do produto',
           hintStyle: const TextStyle(
             color: Colors.grey,
