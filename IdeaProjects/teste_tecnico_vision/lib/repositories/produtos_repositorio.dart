@@ -21,6 +21,7 @@ class ItemRepositorio {
     List<Item> itens = await carregarItens();
     itens.add(item);
     await prefs.setString(_chaveItens, json.encode(itens.map((item) => item.toJson()).toList()));
+    await item.saveToSharedPreferences();
   }
 
   Future<void> excluirItem(Item item) async {
@@ -28,6 +29,8 @@ class ItemRepositorio {
     List<Item> itens = await carregarItens();
     itens.removeWhere((element) => element.nome == item.nome);
     await prefs.setString(_chaveItens, json.encode(itens.map((item) => item.toJson()).toList()));
+
+    await item.removeFromSharedPreferences();
   }
 
   Future<void> editarItem(String nomeAntigo, Item itemAtualizado) async {

@@ -1,73 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../blocs/listaCompras/lista_compras_evento.dart';
 import '../../models/itens.dart';
 import 'package:teste_tecnico_vision/controller/api_calorias.dart';
+import 'package:teste_tecnico_vision/repositories/lista_compra_repositorio.dart';
+import '../../models/lista.dart';
 
 class ProductListItem extends StatelessWidget {
   final Item item;
   final VoidCallback onRemove;
   final VoidCallback onEdit;
+  final ListaCompras listacompras;
 
   ProductListItem({
     required this.item,
     required this.onRemove,
     required this.onEdit,
+    required this.listacompras,
   });
+
+  final ListaCompraRepositorio listaCompraRepositorio = ListaCompraRepositorio();
 
   void _showDeleteConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Confirmar exclusão",style: TextStyle(
-            fontFamily: 'Brutel',
-            fontWeight: FontWeight.bold,
-            fontSize: 18.0,
-          ),),
-          content: Text("Tem certeza que deseja excluir ${item.nome}?",style: const TextStyle(fontFamily: 'Brutel'),),
+          title: const Text(
+            "Confirmar exclusão",
+            style: TextStyle(
+              fontFamily: 'Brutel',
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ),
+          content: Text(
+            "Tem certeza que deseja excluir ${item.nome}?",
+            style: const TextStyle(fontFamily: 'Brutel'),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Colors.amber,
-                  ),
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                  child: const Text(
-                    'Cancelar',
-                    style: TextStyle(
-                      fontFamily: 'Brutel',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.amber,
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                child: const Text(
+                  'Cancelar',
+                  style: TextStyle(
+                    fontFamily: 'Brutel',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
+              ),
             ),
             TextButton(
               onPressed: () {
                 onRemove();
                 Navigator.of(context).pop();
               },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Colors.red,
-                  ),
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                  child: const Text(
-                    'Excluir',
-                    style: TextStyle(
-                      fontFamily: 'Brutel',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.red,
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                child: const Text(
+                  'Excluir',
+                  style: TextStyle(
+                    fontFamily: 'Brutel',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
+              ),
             ),
           ],
         );
@@ -94,6 +107,9 @@ class ProductListItem extends StatelessWidget {
                   value: item.isSelected.value,
                   onChanged: (bool? value) {
                     item.isSelected.value = value ?? false;
+                    item.saveToSharedPreferences();
+                    EditarNomeListaCompra(
+                        listacompras.nome, listacompras.nome);
                   },
                 )),
           ),
@@ -137,22 +153,23 @@ class ProductListItem extends StatelessWidget {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              item.preco==null?
-                const Text(
-                  'R\$0.00',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontFamily: 'Brutel',
-                  ),
-                ): Text(
-                'R\$${((item.preco ?? 0.0) * item.quantidade).toStringAsFixed(2)}',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontFamily: 'Brutel',
-                ),
-              ),
+              item.preco == null
+                  ? const Text(
+                      'R\$0.00',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontFamily: 'Brutel',
+                      ),
+                    )
+                  : Text(
+                      'R\$${((item.preco ?? 0.0) * item.quantidade).toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontFamily: 'Brutel',
+                      ),
+                    ),
               Container(
                 height: 20,
                 width: 20,
