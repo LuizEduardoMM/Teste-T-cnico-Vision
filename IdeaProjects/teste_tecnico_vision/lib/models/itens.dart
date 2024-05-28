@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Item {
   final String nome;
@@ -30,4 +31,14 @@ class Item {
     preco: json['preco']?.toDouble(),
     isSelected: json['isSelected'] ?? false,
   );
+  Future<void> saveToSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('${nome}_isSelected', isSelected.value);
+  }
+
+  Future<void> removeFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('${nome}_isSelected');
+  }
+
 }

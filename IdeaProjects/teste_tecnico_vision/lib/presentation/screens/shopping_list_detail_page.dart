@@ -75,6 +75,7 @@ class ShoppingListDetailPage extends StatelessWidget {
                             children: controller.categorizedItems.entries
                                 .map((entry) {
                               return ProductCategory(
+                                listacompras: shoppingList,
                                 category: entry.key,
                                 items: entry.value,
                                 onRemoveProduct: (item) {

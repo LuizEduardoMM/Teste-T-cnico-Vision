@@ -21,7 +21,6 @@ class ShoppingListController extends GetxController {
   void updateCategorizedItems(Map<String, List<Item>> items) {
     categorizedItems.value = items;
     updateTotals();
-
     items.forEach((category, itemList) {
       itemList.forEach((item) {
         item.isSelected.listen((_) {
@@ -32,7 +31,11 @@ class ShoppingListController extends GetxController {
   }
 
   void updateSearchTerm(String term) {
-
+     categorizedItems.forEach((category, items) {
+        items.forEach((item) {
+          term=item.nome;
+        });
+      });
   }
 
   void removeProduct(String category, Item item) {

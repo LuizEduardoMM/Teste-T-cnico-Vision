@@ -31,8 +31,8 @@ class ItemSearchBar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: TextField(
         controller: TextEditingController(),
-        onChanged: (value) {
-          controller.updateSearchTerm(value);
+        onSubmitted: (value) {
+          controller.updateSearchTerm(value.isNotEmpty ? value : '');
         },
         decoration: InputDecoration(
           border: OutlineInputBorder(
