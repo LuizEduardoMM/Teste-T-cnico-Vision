@@ -30,7 +30,9 @@ class _ProductCreationFormState extends State<ProductCreationForm> {
       final newProduct = Item(
         nome: _productNameController.text,
         quantidade: int.parse(_quantityController.text),
-        preco: _priceController.text.isNotEmpty ? double.parse(_priceController.text) : null,
+        preco: _priceController.text.isNotEmpty
+            ? double.parse(_priceController.text)
+            : null,
         categoria: _selectedCategory ?? 'Sem categoria',
       );
 
@@ -80,7 +82,7 @@ class _ProductCreationFormState extends State<ProductCreationForm> {
           TextFormField(
             controller: _priceController,
             decoration: InputDecoration(
-              labelText: 'Preçoa',
+              labelText: 'Preço',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30.0),
               ),
@@ -95,8 +97,8 @@ class _ProductCreationFormState extends State<ProductCreationForm> {
                 borderRadius: BorderRadius.circular(30.0),
               ),
             ),
-            items: ['Alimentos', 'Limpeza', 'Higiene', 'Outros']
-                .map((category) {
+            items:
+                ['Alimentos', 'Limpeza', 'Higiene', 'Outros'].map((category) {
               return DropdownMenuItem<String>(
                 value: category,
                 child: Text(category),

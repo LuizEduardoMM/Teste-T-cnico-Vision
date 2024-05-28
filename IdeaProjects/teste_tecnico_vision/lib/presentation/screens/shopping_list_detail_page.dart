@@ -4,23 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/models/itens.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/custom_app_bar_cart.dart';
-
 import 'package:teste_tecnico_vision/presentation/widgets/item_search_bar.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/product_categories.dart';
 import 'package:teste_tecnico_vision/controller/shopping_list_controller.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compra_estado.dart';
-
-import '../widgets/shopping_list_header.dart';
-import '../widgets/shopping_list_summary.dart';
+import 'package:teste_tecnico_vision/presentation/widgets/shopping_list_header.dart';
+import 'package:teste_tecnico_vision/presentation/widgets/shopping_list_summary.dart';
 
 class ShoppingListDetailPage extends StatelessWidget {
   final ListaCompras shoppingList;
   final ShoppingListController controller = Get.put(ShoppingListController());
 
   ShoppingListDetailPage({required this.shoppingList});
-
 
   Map<String, List<Item>> _categorizeItems(List<Item> items) {
     final Map<String, List<Item>> categorizedItems = {};
@@ -69,7 +66,8 @@ class ShoppingListDetailPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ItemSearchBar(controller: controller, shoppingList: shoppingList),
+                        ItemSearchBar(
+                            controller: controller, shoppingList: shoppingList),
                         Obx(() {
                           return Column(
                             children: controller.categorizedItems.entries
@@ -100,5 +98,3 @@ class ShoppingListDetailPage extends StatelessWidget {
     );
   }
 }
-
-

@@ -42,7 +42,7 @@ class DialogCleanList extends StatelessWidget {
               color: Colors.amber,
             ),
             padding:
-            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: const Text(
               'Cancelar',
               style: TextStyle(
@@ -55,12 +55,12 @@ class DialogCleanList extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            BlocProvider.of<ShoppingListBloc>(context).add(LimparListaCompra(shoppingList.nome)); // Resposta: Sim
+            BlocProvider.of<ShoppingListBloc>(context)
+                .add(LimparListaCompra(shoppingList.nome)); // Resposta: Sim
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Lista ${shoppingList.nome} limpa com sucesso'),
-                ));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Lista ${shoppingList.nome} limpa com sucesso'),
+            ));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -68,7 +68,7 @@ class DialogCleanList extends StatelessWidget {
               color: Colors.red,
             ),
             padding:
-            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: const Text(
               'Limpar',
               style: TextStyle(

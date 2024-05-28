@@ -5,7 +5,6 @@ import 'package:teste_tecnico_vision/presentation/screens/initial_screen.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
 import 'package:teste_tecnico_vision/repositories/lista_compra_repositorio.dart';
 
-
 void main() {
   final shoppingListRepository = ListaCompraRepositorio();
 
@@ -20,7 +19,9 @@ class GroceriEasy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ShoppingListBloc(shoppingListRepository: shoppingListRepository)..add(CarregarListaCompra()),
+      create: (context) =>
+          ShoppingListBloc(shoppingListRepository: shoppingListRepository)
+            ..add(CarregarListaCompra()),
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'GroceriEasy',

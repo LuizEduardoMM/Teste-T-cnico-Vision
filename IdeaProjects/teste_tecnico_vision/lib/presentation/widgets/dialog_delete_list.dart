@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
-
-import '../../blocs/listaCompras/lista_compras_evento.dart';
+import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
 
 class DialogDeleteList extends StatelessWidget {
   final ListaCompras shoppingList;

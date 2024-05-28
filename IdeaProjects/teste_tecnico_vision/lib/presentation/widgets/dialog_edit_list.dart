@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../blocs/listaCompras/lista_compras_bloc.dart';
-import '../../blocs/listaCompras/lista_compras_evento.dart';
-import '../../models/lista.dart';
+import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
+import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
+import 'package:teste_tecnico_vision/models/lista.dart';
 
 class DialogEditList {
   static void show(BuildContext context, ListaCompras shoppingList) {
-    TextEditingController _dialogController = TextEditingController(text: shoppingList.nome);
+    TextEditingController _dialogController =
+        TextEditingController(text: shoppingList.nome);
     showDialog(
       context: context,
       builder: (context) {
@@ -39,7 +39,8 @@ class DialogEditList {
                   borderRadius: BorderRadius.circular(20.0),
                   color: Colors.red,
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
                 child: const Text(
                   'Cancelar',
                   style: TextStyle(
@@ -53,15 +54,17 @@ class DialogEditList {
             TextButton(
               onPressed: () {
                 final novoNome = _dialogController.text;
-              BlocProvider.of<ShoppingListBloc>(context).add(EditarNomeListaCompra(shoppingList.nome, novoNome));
-              Navigator.of(context).pop();
+                BlocProvider.of<ShoppingListBloc>(context)
+                    .add(EditarNomeListaCompra(shoppingList.nome, novoNome));
+                Navigator.of(context).pop();
               },
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
-                  color:Colors.amber,
+                  color: Colors.amber,
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
                 child: const Text(
                   'Editar',
                   style: TextStyle(
@@ -78,4 +81,3 @@ class DialogEditList {
     );
   }
 }
-

@@ -20,7 +20,8 @@ class CustomAppBarHome extends StatelessWidget implements PreferredSizeWidget {
           right: 0,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-            child: Image.asset('assets/images/Sacola.png', width: 220, height: 130),
+            child: Image.asset('assets/images/Sacola.png',
+                width: 220, height: 130),
           ),
         ),
       ],

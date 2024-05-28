@@ -7,7 +7,8 @@ import 'package:teste_tecnico_vision/repositories/lista_compra_repositorio.dart'
 class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
   final ListaCompraRepositorio shoppingListRepository;
 
-  ShoppingListBloc({required this.shoppingListRepository}) : super(const ShoppingListState([])) {
+  ShoppingListBloc({required this.shoppingListRepository})
+      : super(const ShoppingListState([])) {
     on<CarregarListaCompra>(_carregarListaCompra);
     on<AddListaCompra>(_addListaCompra);
     on<AddProdutoListaCompra>(_onAddProductToShoppingList);
@@ -16,10 +17,10 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
     on<EditarNomeListaCompra>(_onEditarNomeListaCompra);
     on<EditarItemListaCompra>(_onEditarItemListaCompra);
     on<LimparListaCompra>(_onLimparListaCompra);
-
   }
 
-  void _onAddProductToShoppingList(AddProdutoListaCompra event, Emitter<ShoppingListState> emit) async {
+  void _onAddProductToShoppingList(
+      AddProdutoListaCompra event, Emitter<ShoppingListState> emit) async {
     final updatedLists = state.listaCompras.map((lista) {
       if (lista.nome == event.nomeListaCompra) {
         return ListaCompras(
@@ -34,26 +35,32 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
     await shoppingListRepository.salvarListaCompras(updatedLists);
 
     emit(ShoppingListState(updatedLists));
-
   }
 
-  void _mapDeleteListaCompraToState(DeleteListaCompra event, Emitter<ShoppingListState> emit) async {
-    final updatedLists = List<ListaCompras>.from(state.listaCompras)..remove(event.lista);
+  void _mapDeleteListaCompraToState(
+      DeleteListaCompra event, Emitter<ShoppingListState> emit) async {
+    final updatedLists = List<ListaCompras>.from(state.listaCompras)
+      ..remove(event.lista);
     await shoppingListRepository.salvarListaCompras(updatedLists);
     emit(ShoppingListState(updatedLists));
   }
 
-  void _addListaCompra(AddListaCompra event, Emitter<ShoppingListState> emit) async {
-    final updatedList = List<ListaCompras>.from(state.listaCompras)..add(event.listaCompra);
+  void _addListaCompra(
+      AddListaCompra event, Emitter<ShoppingListState> emit) async {
+    final updatedList = List<ListaCompras>.from(state.listaCompras)
+      ..add(event.listaCompra);
     await shoppingListRepository.salvarListaCompras(updatedList);
     emit(ShoppingListState(updatedList));
   }
 
-  void _carregarListaCompra(CarregarListaCompra event, Emitter<ShoppingListState> emit) async {
+  void _carregarListaCompra(
+      CarregarListaCompra event, Emitter<ShoppingListState> emit) async {
     final shoppingLists = await shoppingListRepository.carregarListaShopping();
     emit(ShoppingListState(shoppingLists));
   }
-  void _onRemoveProductFromShoppingList(RemoverProdutoListaCompra event, Emitter<ShoppingListState> emit) async {
+
+  void _onRemoveProductFromShoppingList(
+      RemoverProdutoListaCompra event, Emitter<ShoppingListState> emit) async {
     final updatedLists = state.listaCompras.map((lista) {
       if (lista.nome == event.nomeListaCompra) {
         return ListaCompras(
@@ -69,7 +76,8 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
     emit(ShoppingListState(updatedLists));
   }
 
-  void _onEditarNomeListaCompra(EditarNomeListaCompra event, Emitter<ShoppingListState> emit) async {
+  void _onEditarNomeListaCompra(
+      EditarNomeListaCompra event, Emitter<ShoppingListState> emit) async {
     final updatedLists = state.listaCompras.map((lista) {
       if (lista.nome == event.nomeAntigo) {
         return ListaCompras(
@@ -85,7 +93,8 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
     emit(ShoppingListState(updatedLists));
   }
 
-  void _onEditarItemListaCompra(EditarItemListaCompra event, Emitter<ShoppingListState> emit) async {
+  void _onEditarItemListaCompra(
+      EditarItemListaCompra event, Emitter<ShoppingListState> emit) async {
     final updatedLists = state.listaCompras.map((lista) {
       if (lista.itens.any((item) => item.nome == event.nomeAntigo)) {
         final updatedItems = lista.itens.map((item) {
@@ -103,7 +112,9 @@ class ShoppingListBloc extends Bloc<ListaCompraEvento, ShoppingListState> {
     await shoppingListRepository.salvarListaCompras(updatedLists);
     emit(ShoppingListState(updatedLists));
   }
-  void _onLimparListaCompra(LimparListaCompra event, Emitter<ShoppingListState> emit) async {
+
+  void _onLimparListaCompra(
+      LimparListaCompra event, Emitter<ShoppingListState> emit) async {
     final updatedLists = state.listaCompras.map((lista) {
       if (lista.nome == event.nomeListaCompra) {
         return ListaCompras(

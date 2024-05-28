@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teste_tecnico_vision/models/itens.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/product_list_item.dart';
-
-import 'dialog_edit_item.dart';
+import 'package:teste_tecnico_vision/presentation/widgets/dialog_edit_item.dart';
 
 class ProductList extends StatelessWidget {
   final List<Item> items;
@@ -21,7 +20,7 @@ class ProductList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: items.map((item) {
         return ProductListItem(
-          listacompras:listacompras,
+          listacompras: listacompras,
           item: item,
           onRemove: () => onRemoveProduct(item),
           onEdit: () {

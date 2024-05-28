@@ -31,11 +31,11 @@ class ShoppingListController extends GetxController {
   }
 
   void updateSearchTerm(String term) {
-     categorizedItems.forEach((category, items) {
-        items.forEach((item) {
-          term=item.nome;
-        });
+    categorizedItems.forEach((category, items) {
+      items.forEach((item) {
+        term = item.nome;
       });
+    });
   }
 
   void removeProduct(String category, Item item) {
@@ -49,7 +49,8 @@ class ShoppingListController extends GetxController {
 
     categorizedItems.forEach((category, items) {
       totalItemsCount += items.length;
-      totalPriceSum += items.fold(0, (sum, item) => sum + ((item.preco ?? 0.0) * item.quantidade));
+      totalPriceSum += items.fold(
+          0, (sum, item) => sum + ((item.preco ?? 0.0) * item.quantidade));
     });
 
     totalItems.value = totalItemsCount;
@@ -93,5 +94,4 @@ class ShoppingListController extends GetxController {
     });
     categorizedItems.refresh();
   }
-
 }

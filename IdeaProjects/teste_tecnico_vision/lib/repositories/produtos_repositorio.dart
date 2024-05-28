@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../models/itens.dart';
+import 'package:teste_tecnico_vision/models/itens.dart';
 
 class ItemRepositorio {
   static const String _chaveItens = 'shopping_items';
