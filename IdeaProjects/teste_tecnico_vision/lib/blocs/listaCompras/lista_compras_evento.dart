@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:teste_tecnico_vision/models/itens.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
+
 abstract class ListaCompraEvento extends Equatable {
   const ListaCompraEvento();
 
@@ -28,6 +29,7 @@ class AddProdutoListaCompra extends ListaCompraEvento {
   @override
   List<Object> get props => [nomeListaCompra, produto];
 }
+
 class FiltrarListaCompras extends ListaCompraEvento {
   final String query;
 
@@ -36,6 +38,7 @@ class FiltrarListaCompras extends ListaCompraEvento {
   @override
   List<Object> get props => [query];
 }
+
 class DeleteListaCompra extends ListaCompraEvento {
   final ListaCompras lista;
 
@@ -44,18 +47,21 @@ class DeleteListaCompra extends ListaCompraEvento {
   @override
   List<Object> get props => [lista];
 }
+
 class RemoverProdutoListaCompra extends ListaCompraEvento {
   final String nomeListaCompra;
   final Item produto;
 
   RemoverProdutoListaCompra(this.nomeListaCompra, this.produto);
 }
+
 class EditarNomeListaCompra extends ListaCompraEvento {
   final String nomeAntigo;
   final String nomeNovo;
 
   EditarNomeListaCompra(this.nomeAntigo, this.nomeNovo);
 }
+
 class EditarItemListaCompra extends ListaCompraEvento {
   final String nomeAntigo;
   final Item itemAtualizado;

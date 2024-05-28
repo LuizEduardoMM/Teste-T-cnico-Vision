@@ -4,10 +4,10 @@ import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart'
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compra_estado.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/custom_app_bar.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/dialog_create_list.dart';
-import 'package:teste_tecnico_vision/presentation/widgets/search_bar.dart' as custom;
+import 'package:teste_tecnico_vision/presentation/widgets/search_bar.dart'
+    as custom;
 import 'package:teste_tecnico_vision/presentation/widgets/create_list_tile.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/shopping_list_item.dart';
-
 
 class ShoppingListPage extends StatefulWidget {
   @override
@@ -41,8 +41,6 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
       _filterQuery = _controller.text.toLowerCase();
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +85,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
                       child: ShoppingListCreateTile(
-                        onTap: (){
+                        onTap: () {
                           DialogCreateList.show(context);
                         },
                       ),
@@ -95,8 +93,11 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                     Expanded(
                       child: BlocBuilder<ShoppingListBloc, ShoppingListState>(
                         builder: (context, state) {
-                          final listaParaMostrar = state.listaCompras.where((lista) {
-                            return lista.nome.toLowerCase().contains(_filterQuery);
+                          final listaParaMostrar =
+                              state.listaCompras.where((lista) {
+                            return lista.nome
+                                .toLowerCase()
+                                .contains(_filterQuery);
                           }).toList();
                           if (listaParaMostrar.isEmpty) {
                             return const Center(
@@ -106,7 +107,8 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                             itemCount: listaParaMostrar.length,
                             itemBuilder: (context, index) {
                               final shoppingList = listaParaMostrar[index];
-                              return ShoppingListItem(shoppingList: shoppingList);
+                              return ShoppingListItem(
+                                  shoppingList: shoppingList);
                             },
                           );
                         },

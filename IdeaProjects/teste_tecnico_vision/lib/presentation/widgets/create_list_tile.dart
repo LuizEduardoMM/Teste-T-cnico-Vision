@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class ShoppingListCreateTile extends StatelessWidget {
   final VoidCallback onTap;
 
-  const ShoppingListCreateTile({Key? key, required this.onTap}) : super(key: key);
+  const ShoppingListCreateTile({Key? key, required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

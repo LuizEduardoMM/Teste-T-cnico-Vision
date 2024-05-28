@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../blocs/listaCompras/lista_compras_bloc.dart';
-import '../../blocs/listaCompras/lista_compras_evento.dart';
-import '../../models/lista.dart';
+import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
+import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
+import 'package:teste_tecnico_vision/models/lista.dart';
 
 class DialogCreateList {
   static void show(BuildContext context) {
@@ -39,7 +38,8 @@ class DialogCreateList {
                   borderRadius: BorderRadius.circular(20.0),
                   color: Colors.red,
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
                 child: const Text(
                   'Cancelar',
                   style: TextStyle(
@@ -65,9 +65,10 @@ class DialogCreateList {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
-                  color:Colors.amber,
+                  color: Colors.amber,
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
                 child: const Text(
                   'Criar',
                   style: TextStyle(
@@ -84,4 +85,3 @@ class DialogCreateList {
     );
   }
 }
-

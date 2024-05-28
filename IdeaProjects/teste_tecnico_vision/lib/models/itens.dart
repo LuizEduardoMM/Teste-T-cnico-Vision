@@ -17,20 +17,21 @@ class Item {
   }) : isSelected = RxBool(isSelected);
 
   Map<String, dynamic> toJson() => {
-    'nome': nome,
-    'quantidade': quantidade,
-    'categoria': categoria,
-    'preco': preco,
-    'isSelected': isSelected.value,
-  };
+        'nome': nome,
+        'quantidade': quantidade,
+        'categoria': categoria,
+        'preco': preco,
+        'isSelected': isSelected.value,
+      };
 
   static Item fromJson(Map<String, dynamic> json) => Item(
-    nome: json['nome'],
-    quantidade: json['quantidade'],
-    categoria: json['categoria'],
-    preco: json['preco']?.toDouble(),
-    isSelected: json['isSelected'] ?? false,
-  );
+        nome: json['nome'],
+        quantidade: json['quantidade'],
+        categoria: json['categoria'],
+        preco: json['preco']?.toDouble(),
+        isSelected: json['isSelected'] ?? false,
+      );
+
   Future<void> saveToSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('${nome}_isSelected', isSelected.value);
@@ -40,5 +41,4 @@ class Item {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('${nome}_isSelected');
   }
-
 }

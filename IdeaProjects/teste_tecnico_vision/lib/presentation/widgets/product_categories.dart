@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/presentation/widgets/product_list.dart';
+import 'package:teste_tecnico_vision/models/itens.dart';
 
-import '../../models/itens.dart';
 class ProductCategory extends StatelessWidget {
   final String category;
   final List<Item> items;
   final Function(Item) onRemoveProduct;
   final ListaCompras listacompras;
 
-  ProductCategory({required this.category, required this.items, required this.onRemoveProduct, required this.listacompras});
+  ProductCategory(
+      {required this.category,
+      required this.items,
+      required this.onRemoveProduct,
+      required this.listacompras});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +31,10 @@ class ProductCategory extends StatelessWidget {
               fontFamily: 'Brutel',
             ),
           ),
-          ProductList(items: items, onRemoveProduct: onRemoveProduct,listacompras:listacompras),
+          ProductList(
+              items: items,
+              onRemoveProduct: onRemoveProduct,
+              listacompras: listacompras),
         ],
       ),
     );

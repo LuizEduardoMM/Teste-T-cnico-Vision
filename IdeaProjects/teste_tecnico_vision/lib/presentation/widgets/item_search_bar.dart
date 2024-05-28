@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teste_tecnico_vision/controller/shopping_list_controller.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/presentation/screens/insert_itens_screen.dart';
-import '../../blocs/listaCompras/lista_compras_bloc.dart';
-import '../../blocs/listaCompras/lista_compras_evento.dart';
+import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
+import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
 
 class ItemSearchBar extends StatelessWidget {
   final ShoppingListController controller;
