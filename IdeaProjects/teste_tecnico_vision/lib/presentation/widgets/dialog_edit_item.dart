@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,32 +14,61 @@ void showEditItemDialog(BuildContext context, Item item) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('Editar Item'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _nomeController,
-              decoration: InputDecoration(hintText: "Nome do Item"),
+        title: const Text('Editar item',style: TextStyle(fontFamily: 'Brutel',fontWeight: FontWeight.w300 ),),
+        content: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _nomeController,
+                    decoration:  InputDecoration(hintText: "Nome do item",border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _quantidadeController,
+                    decoration:  InputDecoration(hintText: "Quantidade",border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _precoController,
+                    decoration:  InputDecoration(hintText: "Preço",border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ],
             ),
-            TextField(
-              controller: _quantidadeController,
-              decoration: InputDecoration(hintText: "Quantidade"),
-              keyboardType: TextInputType.number,
-            ),
-            TextField(
-              controller: _precoController,
-              decoration: InputDecoration(hintText: "Preço"),
-              keyboardType: TextInputType.number,
-            ),
-          ],
+          ),
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('Cancelar'),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.red,
+              ),
+              padding:
+              const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(
+                  fontFamily: 'Brutel',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -52,7 +82,22 @@ void showEditItemDialog(BuildContext context, Item item) {
 
               Navigator.of(context).pop();
             },
-            child: Text('Salvar'),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.amber,
+              ),
+              padding:
+              const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              child: const Text(
+                'Salvar',
+                style: TextStyle(
+                  fontFamily: 'Brutel',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
         ],
       );
