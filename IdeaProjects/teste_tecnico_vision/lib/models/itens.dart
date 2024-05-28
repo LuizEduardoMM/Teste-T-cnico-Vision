@@ -23,20 +23,20 @@ class Item {
   }
 
   Map<String, dynamic> toJson() => {
-    'nome': nome,
-    'quantidade': quantidade,
-    'categoria': categoria,
-    'preco': preco,
-    'isSelected': isSelected.value,
-  };
+        'nome': nome,
+        'quantidade': quantidade,
+        'categoria': categoria,
+        'preco': preco,
+        'isSelected': isSelected.value,
+      };
 
   static Item fromJson(Map<String, dynamic> json) => Item(
-    nome: json['nome'],
-    quantidade: json['quantidade'],
-    categoria: json['categoria'],
-    preco: json['preco']?.toDouble(),
-    isSelected: json['isSelected'] ?? false,
-  );
+        nome: json['nome'],
+        quantidade: json['quantidade'],
+        categoria: json['categoria'],
+        preco: json['preco']?.toDouble(),
+        isSelected: json['isSelected'] ?? false,
+      );
 
   Future<void> saveToSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -56,7 +56,7 @@ class DialogCleanList extends StatelessWidget {
         TextButton(
           onPressed: () {
             BlocProvider.of<ShoppingListBloc>(context)
-                .add(LimparListaCompra(shoppingList.nome)); // Resposta: Sim
+                .add(LimparListaCompra(shoppingList.nome));
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Lista ${shoppingList.nome} limpa com sucesso'),

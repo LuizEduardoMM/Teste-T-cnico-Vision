@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
 import 'package:teste_tecnico_vision/models/itens.dart';
 import 'package:teste_tecnico_vision/controller/api_calorias.dart';
 import 'package:teste_tecnico_vision/repositories/lista_compra_repositorio.dart';
@@ -19,7 +18,8 @@ class ProductListItem extends StatelessWidget {
     required this.listacompras,
   });
 
-  final ListaCompraRepositorio listaCompraRepositorio = ListaCompraRepositorio();
+  final ListaCompraRepositorio listaCompraRepositorio =
+      ListaCompraRepositorio();
 
   void _showDeleteConfirmationDialog(BuildContext context) {
     showDialog(

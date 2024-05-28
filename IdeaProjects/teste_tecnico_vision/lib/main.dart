@@ -4,6 +4,7 @@ import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dar
 import 'package:teste_tecnico_vision/presentation/screens/initial_screen.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
 import 'package:teste_tecnico_vision/repositories/lista_compra_repositorio.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   final shoppingListRepository = ListaCompraRepositorio();
@@ -18,6 +19,7 @@ class GroceriEasy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DeviceOrientation.portraitUp;
     return BlocProvider(
       create: (context) =>
           ShoppingListBloc(shoppingListRepository: shoppingListRepository)
