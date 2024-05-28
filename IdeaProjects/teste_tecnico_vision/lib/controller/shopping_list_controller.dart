@@ -90,4 +90,5 @@ class ShoppingListController extends GetxController {
     });
     categorizedItems.refresh();
   }
+
 }

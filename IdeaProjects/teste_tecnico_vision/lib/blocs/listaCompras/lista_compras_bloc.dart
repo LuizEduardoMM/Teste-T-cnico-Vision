@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:teste_tecnico_vision/models/lista.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compra_estado.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';

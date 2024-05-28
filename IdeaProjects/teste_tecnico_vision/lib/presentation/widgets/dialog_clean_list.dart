@@ -36,11 +36,20 @@ class DialogCleanList extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text(
-            'Não',
-            style: TextStyle(
-              fontFamily: 'Brutel',
-              fontWeight: FontWeight.bold,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Colors.amber,
+            ),
+            padding:
+            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(
+                fontFamily: 'Brutel',
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -48,12 +57,25 @@ class DialogCleanList extends StatelessWidget {
           onPressed: () {
             BlocProvider.of<ShoppingListBloc>(context).add(LimparListaCompra(shoppingList.nome)); // Resposta: Sim
             Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Lista ${shoppingList.nome} limpa com sucesso'),
+                ));
           },
-          child: const Text(
-            'Sim',
-            style: TextStyle(
-              fontFamily: 'Brutel',
-              fontWeight: FontWeight.bold,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Colors.red,
+            ),
+            padding:
+            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            child: const Text(
+              'Limpar',
+              style: TextStyle(
+                fontFamily: 'Brutel',
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ),

@@ -33,7 +33,7 @@ class DialogDeleteList extends StatelessWidget {
               color: Colors.amber,
             ),
             padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: const Text(
               'Cancelar',
               style: TextStyle(
@@ -57,7 +57,7 @@ class DialogDeleteList extends StatelessWidget {
               color: Colors.red,
             ),
             padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: const Text(
               'Apagar',
               style: TextStyle(
