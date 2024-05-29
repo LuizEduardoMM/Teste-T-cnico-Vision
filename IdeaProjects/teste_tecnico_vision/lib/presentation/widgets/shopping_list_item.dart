@@ -24,7 +24,7 @@ class ShoppingListItem extends StatelessWidget {
           title: Text(
             '${shoppingList.nome} | Criada em: ${shoppingList.dataCriacao.toLocal().toShortDateString()}',
             style: const TextStyle(
-              fontFamily: 'Brutel',
+
               fontSize: 13,
             ),
           ),

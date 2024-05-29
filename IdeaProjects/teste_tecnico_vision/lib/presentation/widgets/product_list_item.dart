@@ -113,7 +113,6 @@ class ProductListItem extends StatelessWidget {
           title: item.categoria != "Alimentos"
               ? Text(item.nome,
                   style: const TextStyle(
-                      fontFamily: 'Brutel',
                       fontSize: 12,
                       fontWeight: FontWeight.bold))
               : FutureBuilder<String>(
@@ -122,19 +121,19 @@ class ProductListItem extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Text('${item.nome}| Calorias: Carregando...',
                           style: const TextStyle(
-                              fontFamily: 'Brutel', fontSize: 10));
+                              fontSize: 10));
                     } else if (snapshot.hasError) {
                       return Text(
                         item.nome,
                         style: const TextStyle(
-                            fontFamily: 'Brutel',
+
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
                       );
                     } else {
                       return Text('${item.nome} \n${snapshot.data}',
                           style: const TextStyle(
-                              fontFamily: 'Brutel',
+
                               fontSize: 10,
                               fontWeight: FontWeight.bold));
                     }

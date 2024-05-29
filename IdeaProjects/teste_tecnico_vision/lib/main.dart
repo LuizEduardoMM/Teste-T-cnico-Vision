@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_evento.dart';
 import 'package:teste_tecnico_vision/presentation/screens/initial_screen.dart';
 import 'package:teste_tecnico_vision/blocs/listaCompras/lista_compras_bloc.dart';
@@ -28,6 +29,16 @@ class GroceriEasy extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'GroceriEasy',
         home: InitialScreen(),
+        locale: Locale('pt', 'BR'),
+        supportedLocales: [
+          Locale('en', 'US'),
+          Locale('pt', 'BR'),
+        ],
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
       ),
     );
   }
