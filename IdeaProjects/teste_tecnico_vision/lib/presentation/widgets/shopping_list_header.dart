@@ -40,7 +40,6 @@ class ShoppingListHeader extends StatelessWidget {
                 shoppingList.nome,
                 style: const TextStyle(
                   color: Colors.black,
-                  fontFamily: 'Brutel',
                   fontSize: 20,
                 ),
               ),
